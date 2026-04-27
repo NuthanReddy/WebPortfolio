@@ -3,14 +3,28 @@ import SectionHeading from "@/components/SectionHeading.astro";
 import { skills, projects, courses, certifications } from "@/lib/data";
 
 // Build skill keyword -> related data
-const skillData = new Map<string, { projects: string[]; courses: string[]; certs: string[] }>();
+const skillData = new Map<string, { projects: string[]; courses: string[]; certs: string[]; contributions: string[] }>();
 
 for (const project of projects) {
   for (const kw of project.keywords) {
     const key = kw.toLowerCase();
-    if (!skillData.has(key)) skillData.set(key, { projects: [], courses: [], certs: [] });
+    if (!skillData.has(key)) skillData.set(key, { projects: [], courses: [], certs: [], contributions: [] });
     const d = skillData.get(key)!;
     if (!d.projects.includes(project.name)) d.projects.push(project.name);
+  }
+}
+
+// Community contributions mapped to skills
+const contributions = [
+  { name: "ApacheCon NA 2020 — Prebid Streaming Pipeline", keywords: ["kafka", "kubernetes", "java", "docker"] },
+  { name: "spark-snowflake Connector (OSS Committer)", keywords: ["apache spark", "snowflake", "scala"] },
+];
+for (const contrib of contributions) {
+  for (const kw of contrib.keywords) {
+    const key = kw.toLowerCase();
+    if (!skillData.has(key)) skillData.set(key, { projects: [], courses: [], certs: [], contributions: [] });
+    const d = skillData.get(key)!;
+    if (!d.contributions.includes(contrib.name)) d.contributions.push(contrib.name);
   }
 }
 
@@ -47,7 +61,7 @@ for (const cert of certifications) {
 // Get backing data for a single skill keyword
 function getSkillBacking(kw: string) {
   const d = skillData.get(kw.toLowerCase());
-  return { projects: d?.projects || [], courses: d?.courses || [], certs: d?.certs || [] };
+  return { projects: d?.projects || [], courses: d?.courses || [], certs: d?.certs || [], contributions: d?.contributions || [] };
 }
 
 // Category color palette
@@ -132,7 +146,8 @@ skills.forEach((group, gi) => {
     if (backing.projects.length) tip += `<br/><br/><span style="font-size:10px;color:#666">PROJECTS</span><br/>${backing.projects.map(p => `<span class="text-gray-300">▸ ${p}</span>`).join('<br/>')}`;
     if (backing.courses.length) tip += `<br/><br/><span style="font-size:10px;color:#666">COURSES</span><br/>${backing.courses.map(c => `<span class="text-gray-300">📚 ${c}</span>`).join('<br/>')}`;
     if (backing.certs.length) tip += `<br/><br/><span style="font-size:10px;color:#666">CERTIFICATIONS</span><br/>${backing.certs.map(c => `<span class="text-gray-300">✦ ${c}</span>`).join('<br/>')}`;
-    if (!backing.projects.length && !backing.courses.length && !backing.certs.length) tip += `<br/><span class="text-gray-500" style="font-size:11px">Core skill</span>`;
+    if (!backing.projects.length && !backing.courses.length && !backing.certs.length && !backing.contributions.length) tip += `<br/><span class="text-gray-500" style="font-size:11px">Core skill</span>`;
+    if (backing.contributions.length) tip += `<br/><br/><span style="font-size:10px;color:#666">CONTRIBUTIONS</span><br/>${backing.contributions.map(c => `<span class="text-gray-300">🔧 ${c}</span>`).join('<br/>')}`;
 
     graphEdges.push({ x1: gx, y1: gy, x2: kx, y2: ky, color: col });
     graphNodes.push({ x: kx, y: ky, r: 8, label: kw, type: 'skill', color: col, side: skillSide, tooltip: tip });
@@ -142,19 +157,19 @@ skills.forEach((group, gi) => {
 
 <section id="skill-map" class="py-20 border-t border-white/5">
   <div class="mx-auto max-w-6xl px-6">
-    <SectionHeading label="Skill Map" heading="Skills × Projects" />
+    <SectionHeading label="Skill Map" heading="Skills backed by data" />
     <p class="mt-4 text-sm text-muted max-w-2xl">Hover over any node to see the projects, courses, and certifications behind it.</p>
 
     <div class="mt-12 relative" id="skill-map-wrap">
-      <svg viewBox={`0 0 ${W} ${H}`} class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+      <svg id="skill-map-svg" viewBox={`0 0 ${W} ${H}`} class="w-full h-auto" xmlns="http://www.w3.org/2000/svg" style="cursor:grab">
         <!-- Edges -->
-        {graphEdges.map(e => (
-          <line x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2} stroke={e.color} stroke-opacity="0.15" stroke-width="1.5" />
+        {graphEdges.map((e, ei) => (
+          <line class="skill-edge" data-edge-idx={ei} x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2} stroke={e.color} stroke-opacity="0.15" stroke-width="1.5" />
         ))}
 
         <!-- Nodes -->
         {graphNodes.map((n, i) => (
-          <g class="skill-node" data-idx={i} data-tip={n.tooltip} style="cursor:pointer">
+          <g class="skill-node" data-idx={i} data-tip={n.tooltip} data-x={n.x} data-y={n.y} style="cursor:pointer">
             {/* Hover glow */}
             <circle cx={n.x} cy={n.y} r={n.r + 6} fill={n.color} opacity="0" class="node-glow" />
             {/* Node circle */}
@@ -202,8 +217,8 @@ skills.forEach((group, gi) => {
         ))}
       </svg>
 
-      <!-- Tooltip -->
-      <div id="skill-tooltip" class="fixed hidden rounded-xl bg-gray-900/95 backdrop-blur-sm border border-white/10 p-4 shadow-2xl z-[100] max-w-xs pointer-events-none" style="line-height:1.5">
+      <!-- Tooltip — pointer-events enabled when pinned -->
+      <div id="skill-tooltip" class="fixed hidden rounded-xl bg-gray-900/95 backdrop-blur-sm border border-white/10 p-4 shadow-2xl z-[100] max-w-xs" style="line-height:1.5">
       </div>
     </div>
   </div>
@@ -212,23 +227,176 @@ skills.forEach((group, gi) => {
 <style>
   .skill-node:hover .node-glow { opacity: 0.15 !important; }
   .skill-node:hover circle:not(.node-glow) { stroke-opacity: 1 !important; stroke-width: 2.5 !important; }
+  .skill-node.pinned .node-glow { opacity: 0.2 !important; }
+  .skill-node.pinned circle:not(.node-glow) { stroke-opacity: 1 !important; stroke-width: 3 !important; }
+  .skill-node.dragging { cursor: grabbing !important; }
 </style>
 
 <script is:inline>
 document.addEventListener('DOMContentLoaded', function() {
+  var svg = document.getElementById('skill-map-svg');
   var tooltip = document.getElementById('skill-tooltip');
   var nodes = document.querySelectorAll('.skill-node');
-  if (!tooltip || !nodes.length) return;
+  var edges = document.querySelectorAll('.skill-edge');
+  if (!tooltip || !nodes.length || !svg) return;
 
+  var pinnedNode = null;
+  var dragNode = null;
+  var dragOffset = { x: 0, y: 0 };
+
+  // Build edge index: which edges connect to which nodes
+  // We need to know the graph structure. Encode it from build-time data attributes.
+  // Each node stores data-idx. Edges connect sequentially: center(0) -> cats, cats -> skills.
+  // We'll update edges by matching x,y coordinates.
+
+  function getSVGPoint(e) {
+    var pt = svg.createSVGPoint();
+    var rect = svg.getBoundingClientRect();
+    var viewBox = svg.viewBox.baseVal;
+    pt.x = (e.clientX - rect.left) / rect.width * viewBox.width;
+    pt.y = (e.clientY - rect.top) / rect.height * viewBox.height;
+    return pt;
+  }
+
+  function moveNode(node, nx, ny) {
+    node.setAttribute('data-x', nx);
+    node.setAttribute('data-y', ny);
+    // Move all circles and glow
+    var circles = node.querySelectorAll('circle');
+    circles.forEach(function(c) {
+      c.setAttribute('cx', nx);
+      c.setAttribute('cy', ny);
+    });
+    // Move text elements
+    var texts = node.querySelectorAll('text');
+    var nodeType = null;
+    // Detect type from radius of main circle
+    var mainCircle = circles[1]; // [0] is glow, [1] is main
+    if (!mainCircle) return;
+    var r = parseFloat(mainCircle.getAttribute('r'));
+    if (r >= 40) nodeType = 'center';
+    else if (r >= 30) nodeType = 'category';
+    else nodeType = 'skill';
+
+    texts.forEach(function(t, ti) {
+      if (nodeType === 'center') {
+        t.setAttribute('x', nx);
+        t.setAttribute('y', ny);
+      } else if (nodeType === 'category') {
+        t.setAttribute('x', nx);
+        // Keep y offset for wrapped text
+        if (texts.length > 1) {
+          t.setAttribute('y', ti === 0 ? ny - 7 : ny + 8);
+        } else {
+          t.setAttribute('y', ny);
+        }
+      } else {
+        // Skill: label is offset from node based on text-anchor
+        var anchor = t.getAttribute('text-anchor');
+        if (anchor === 'start') {
+          t.setAttribute('x', nx + r + 6);
+          t.setAttribute('y', ny);
+        } else if (anchor === 'end') {
+          t.setAttribute('x', nx - r - 6);
+          t.setAttribute('y', ny);
+        } else {
+          t.setAttribute('x', nx);
+          var baseY = t.getAttribute('dominant-baseline');
+          if (baseY === 'auto') {
+            t.setAttribute('y', ny - r - 6);
+          } else {
+            t.setAttribute('y', ny + r + 14);
+          }
+        }
+      }
+    });
+
+    // Update connected edges
+    edges.forEach(function(edge) {
+      var ex1 = parseFloat(edge.getAttribute('x1'));
+      var ey1 = parseFloat(edge.getAttribute('y1'));
+      var ex2 = parseFloat(edge.getAttribute('x2'));
+      var ey2 = parseFloat(edge.getAttribute('y2'));
+      var origX = parseFloat(node.getAttribute('data-orig-x') || nx);
+      var origY = parseFloat(node.getAttribute('data-orig-y') || ny);
+      // Match edge endpoints to this node's original position (with tolerance)
+      if (!edge._from) {
+        // First time: store original positions
+        edge._origX1 = ex1;
+        edge._origY1 = ey1;
+        edge._origX2 = ex2;
+        edge._origY2 = ey2;
+      }
+    });
+  }
+
+  // Initialize: store original positions for edge matching
+  var nodePositions = [];
+  nodes.forEach(function(n) {
+    var x = parseFloat(n.getAttribute('data-x'));
+    var y = parseFloat(n.getAttribute('data-y'));
+    n.setAttribute('data-orig-x', x);
+    n.setAttribute('data-orig-y', y);
+    nodePositions.push({ x: x, y: y, el: n });
+  });
+
+  // Build edge->node mapping by matching coordinates
+  edges.forEach(function(edge) {
+    var x1 = parseFloat(edge.getAttribute('x1'));
+    var y1 = parseFloat(edge.getAttribute('y1'));
+    var x2 = parseFloat(edge.getAttribute('x2'));
+    var y2 = parseFloat(edge.getAttribute('y2'));
+    edge._fromNode = null;
+    edge._toNode = null;
+    nodePositions.forEach(function(np, i) {
+      var dx1 = Math.abs(np.x - x1), dy1 = Math.abs(np.y - y1);
+      var dx2 = Math.abs(np.x - x2), dy2 = Math.abs(np.y - y2);
+      if (dx1 < 1 && dy1 < 1) edge._fromNode = i;
+      if (dx2 < 1 && dy2 < 1) edge._toNode = i;
+    });
+  });
+
+  function updateEdges() {
+    edges.forEach(function(edge) {
+      if (edge._fromNode !== null) {
+        var fn = nodes[edge._fromNode];
+        edge.setAttribute('x1', fn.getAttribute('data-x'));
+        edge.setAttribute('y1', fn.getAttribute('data-y'));
+      }
+      if (edge._toNode !== null) {
+        var tn = nodes[edge._toNode];
+        edge.setAttribute('x2', tn.getAttribute('data-x'));
+        edge.setAttribute('y2', tn.getAttribute('data-y'));
+      }
+    });
+  }
+
+  function showTooltip(node, clientX, clientY) {
+    var tip = node.getAttribute('data-tip');
+    if (!tip) return;
+    tooltip.innerHTML = tip;
+    tooltip.classList.remove('hidden');
+    var tx = clientX + 16;
+    var ty = clientY - 10;
+    if (tx + 300 > window.innerWidth) tx = clientX - 310;
+    if (ty + 200 > window.innerHeight) ty = window.innerHeight - 210;
+    if (ty < 10) ty = 10;
+    tooltip.style.left = tx + 'px';
+    tooltip.style.top = ty + 'px';
+  }
+
+  // Hover
   nodes.forEach(function(node) {
     node.addEventListener('mouseenter', function(e) {
-      var tip = node.getAttribute('data-tip');
-      if (!tip) return;
-      tooltip.innerHTML = tip;
-      tooltip.classList.remove('hidden');
+      if (dragNode) return;
+      if (pinnedNode && pinnedNode !== node) return; // don't hover-tooltip when another is pinned
+      showTooltip(node, e.clientX, e.clientY);
     });
 
     node.addEventListener('mousemove', function(e) {
+      if (dragNode) return;
+      if (pinnedNode && pinnedNode !== node) return;
+      if (pinnedNode === node) return; // pinned tooltip stays put
       var tx = e.clientX + 16;
       var ty = e.clientY - 10;
       if (tx + 300 > window.innerWidth) tx = e.clientX - 310;
@@ -239,8 +407,114 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     node.addEventListener('mouseleave', function() {
+      if (pinnedNode === node) return; // keep tooltip if pinned
+      if (dragNode) return;
       tooltip.classList.add('hidden');
     });
+
+    // Click to pin/unpin tooltip
+    node.addEventListener('click', function(e) {
+      if (dragNode) return; // ignore click during drag
+      e.stopPropagation();
+
+      if (pinnedNode === node) {
+        // Unpin
+        pinnedNode.classList.remove('pinned');
+        pinnedNode = null;
+        tooltip.classList.add('hidden');
+        tooltip.style.pointerEvents = 'none';
+      } else {
+        // Unpin previous
+        if (pinnedNode) pinnedNode.classList.remove('pinned');
+        // Pin this one
+        pinnedNode = node;
+        node.classList.add('pinned');
+        showTooltip(node, e.clientX, e.clientY);
+        tooltip.style.pointerEvents = 'auto';
+      }
+    });
+
+    // Drag: mousedown on node
+    node.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      var pt = getSVGPoint(e);
+      var nx = parseFloat(node.getAttribute('data-x'));
+      var ny = parseFloat(node.getAttribute('data-y'));
+      dragOffset.x = pt.x - nx;
+      dragOffset.y = pt.y - ny;
+      dragNode = node;
+      node.classList.add('dragging');
+      svg.style.cursor = 'grabbing';
+    });
+  });
+
+  // Drag: mousemove on SVG
+  svg.addEventListener('mousemove', function(e) {
+    if (!dragNode) return;
+    var pt = getSVGPoint(e);
+    var nx = pt.x - dragOffset.x;
+    var ny = pt.y - dragOffset.y;
+    moveNode(dragNode, nx, ny);
+    updateEdges();
+  });
+
+  // Drag: mouseup
+  document.addEventListener('mouseup', function() {
+    if (dragNode) {
+      dragNode.classList.remove('dragging');
+      dragNode = null;
+      svg.style.cursor = 'grab';
+    }
+  });
+
+  // Click on background to unpin
+  svg.addEventListener('click', function(e) {
+    if (e.target === svg || e.target.tagName === 'line') {
+      if (pinnedNode) {
+        pinnedNode.classList.remove('pinned');
+        pinnedNode = null;
+        tooltip.classList.add('hidden');
+        tooltip.style.pointerEvents = 'none';
+      }
+    }
+  });
+
+  // Touch support for mobile
+  nodes.forEach(function(node) {
+    node.addEventListener('touchstart', function(e) {
+      var touch = e.touches[0];
+      var pt = getSVGPoint(touch);
+      var nx = parseFloat(node.getAttribute('data-x'));
+      var ny = parseFloat(node.getAttribute('data-y'));
+      dragOffset.x = pt.x - nx;
+      dragOffset.y = pt.y - ny;
+      dragNode = node;
+      // Also show tooltip on tap
+      showTooltip(node, touch.clientX, touch.clientY);
+      tooltip.style.pointerEvents = 'auto';
+      if (pinnedNode && pinnedNode !== node) pinnedNode.classList.remove('pinned');
+      pinnedNode = node;
+      node.classList.add('pinned');
+      e.preventDefault();
+    }, { passive: false });
+  });
+
+  svg.addEventListener('touchmove', function(e) {
+    if (!dragNode) return;
+    var touch = e.touches[0];
+    var pt = getSVGPoint(touch);
+    var nx = pt.x - dragOffset.x;
+    var ny = pt.y - dragOffset.y;
+    moveNode(dragNode, nx, ny);
+    updateEdges();
+    e.preventDefault();
+  }, { passive: false });
+
+  svg.addEventListener('touchend', function() {
+    if (dragNode) {
+      dragNode.classList.remove('dragging');
+      dragNode = null;
+    }
   });
 });
 </script>
