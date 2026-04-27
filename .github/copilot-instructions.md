@@ -26,3 +26,8 @@ This is a personal portfolio website for Nuthan Reddy. Static site built with As
 - `npm run dev` — dev server at localhost:4321
 - `npm run build` — type-check + build to dist/
 - `npm run preview` — preview production build
+
+## Git Commit Workflow
+- Commit the current phase before starting the next phase
+- Before each commit, update the project overview / progress notes to reflect completed work
+- Use clear, descriptive commit messages that reference the phase (e.g., `phase-1: add base layout and navigation`)

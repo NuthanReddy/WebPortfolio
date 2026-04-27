@@ -1,7 +1,7 @@
 # CLAUDE.md — Agent Instructions for WebPortfolio
 
 ## Project Overview
-Personal portfolio website for Nuthan Reddy. Static site built with Astro + TypeScript + Tailwind CSS v4, deployed on Cloudflare Pages.
+Personal portfolio website for Nuthan Reddy. Static site built with Astro v6 + TypeScript + Tailwind CSS v4, deployed on Cloudflare Pages. Dark minimal design — navy background, card surfaces, blue accents, single-page layout.
 
 ## Tech Stack
 - **Framework**: Astro v6 (static site generation, zero JS shipped by default)
@@ -34,15 +34,30 @@ All content comes from `nuthan-resume-template.json` at the project root. This f
 
 ### File Conventions
 - Pages: `src/pages/*.astro` (file-based routing)
-- Layouts: `src/layouts/*.astro` (shared HTML structure)
-- Components: `src/components/*.astro` (reusable UI pieces)
-- Styles: Tailwind utility classes inline; global styles in `src/styles/global.css`
+- Layouts: `src/layouts/BaseLayout.astro` (HTML head, meta, fonts, slot)
+- Components: `src/components/*.astro` (Navbar, Hero, About, etc.)
+- Styles: Tailwind utility classes inline; custom theme in `src/styles/global.css` via `@theme`
+
+### Current Components
+- `BaseLayout.astro` — HTML shell, meta tags, Google Fonts
+- `Navbar.astro` — Fixed top nav, blur backdrop, logo, links, contact CTA
+- `Hero.astro` — Split grid: heading + summary left, info cards (About/Work/Follow) right
+- `About.astro` — Stats grid (years, projects, assets, companies)
+
+## Design System (via @theme in global.css)
+- `bg-surface` → `#0f172a` (page background)
+- `bg-surface-card` → `#1e293b` (card backgrounds)
+- `bg-surface-hover` → `#334155` (hover states)
+- `text-accent` / `bg-accent` → `#3B82F6` (blue accent)
+- `text-muted` → `#94a3b8` (secondary text)
+- `font-sans` → Inter
+- `font-mono` → JetBrains Mono
 
 ## Important Rules
 1. **No JavaScript shipped to client** unless absolutely necessary — this is a static content site
 2. **All content from JSON** — never hardcode resume data in components
-3. **Dark mode** uses Tailwind's `class` strategy (`dark:` prefix)
-4. **Tailwind v4** — uses `@import "tailwindcss"` syntax, NOT `@tailwind` directives
+3. **Dark theme only** — no light mode toggle; entire design is dark
+4. **Tailwind v4** — uses `@import "tailwindcss"` and `@theme` directive, NOT `@tailwind` or `tailwind.config.mjs` for colors
 5. **PostCSS** — plugin is `@tailwindcss/postcss`, NOT `tailwindcss`
 6. **Type safety** — all data must flow through `src/types/resume.ts` interfaces
 
@@ -53,9 +68,11 @@ All content comes from `nuthan-resume-template.json` at the project root. This f
 2. Update `src/types/resume.ts` with new interface
 3. Export from `src/lib/data.ts`
 4. Create component in `src/components/SectionName.astro`
-5. Import into page
+5. Import into `src/pages/index.astro`
 
 ### Styling
 - Use Tailwind utilities directly in `.astro` files
-- Custom theme colors: `primary-50` through `primary-950`
-- Fonts: `font-sans` (Inter), `font-mono` (JetBrains Mono)
+- Custom colors defined in `src/styles/global.css` via `@theme` block
+- Cards: `rounded-xl bg-surface-card p-6 border border-white/5`
+- Section labels: `text-xs font-semibold uppercase tracking-widest text-muted`
+- Accent links: `text-accent font-semibold hover:underline`

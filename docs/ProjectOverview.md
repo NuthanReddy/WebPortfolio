@@ -1,6 +1,8 @@
 ## Project Overview
 
-This is a **personal portfolio website** built with **Astro** (a modern static site generator), **TypeScript**, and **Tailwind CSS**. It reads your resume data from a JSON file and renders it as a web page.
+This is a **personal portfolio website** for Nuthan Reddy, built with **Astro v6** (static site generator), **TypeScript** (strict mode), and **Tailwind CSS v4**. It reads resume data from a JSON file and renders it as a dark-themed, card-based single-page site with zero client-side JavaScript.
+
+**Design**: Dark minimal theme — navy background (`#0f172a`), card surfaces (`#1e293b`), blue accent (`#3B82F6`), muted text (`#94a3b8`). Inspired by the "Developer X" portfolio template.
 
 ---
 
@@ -42,9 +44,8 @@ TypeScript configuration — tells the compiler how to behave.
 Configures **Tailwind CSS** (a utility-first CSS framework where you style with classes like `text-xl`, `bg-blue-500`).
 
 - **`content`** — tells Tailwind which files to scan for class names (so unused CSS is removed in production)
-- **`darkMode: "class"`** — enables dark mode via a `class="dark"` on the `<html>` element
-- **`colors.primary`** — defines a custom blue color palette (`primary-50` through `primary-950`) used throughout the site
-- **`fontFamily`** — sets "Inter" as the default font and "JetBrains Mono" for code
+
+**Note**: In Tailwind v4, custom colors and fonts are defined via `@theme` in `global.css`, NOT in this config file. This file only specifies content paths.
 
 ### postcss.config.cjs
 **PostCSS** is a CSS processing pipeline. This tiny file just registers the Tailwind plugin, which transforms Tailwind's `@apply` directives and utility classes into real CSS.
@@ -99,69 +100,114 @@ export const jobs = resume.headings.work.job;
 ## 4. Styles
 
 ### global.css
-Global stylesheet:
+Global stylesheet with Tailwind v4 `@theme` design tokens:
 
 ```css
 @import "tailwindcss";          /* loads all of Tailwind's utility classes */
 
-@layer base {                   /* @layer base = low-priority styles that can be overridden */
-  html { scroll-behavior: smooth; }   /* smooth-scrolling when clicking anchor links */
+@theme {                        /* Tailwind v4 custom design tokens */
+  --color-accent: #3B82F6;      /* blue accent for links, CTAs */
+  --color-surface: #0f172a;     /* page background */
+  --color-surface-card: #1e293b;/* card backgrounds */
+  --color-surface-hover: #334155;/* hover states */
+  --color-muted: #94a3b8;      /* secondary text */
+  --font-sans: "Inter", "system-ui", "sans-serif";
+  --font-mono: "JetBrains Mono", "Fira Code", "monospace";
+}
+
+@layer base {                   /* @layer base = low-priority styles */
+  html { scroll-behavior: smooth; }
   body {
-    @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100;  /* light/dark backgrounds */
-    @apply antialiased;          /* smoother font rendering */
+    @apply bg-surface text-gray-100 antialiased;  /* dark theme default */
   }
 }
 ```
 
-`@apply` is Tailwind's way of using utility classes inside CSS files instead of in HTML.
+`@theme` is the Tailwind v4 way to define custom colors/fonts — replaces `tailwind.config.mjs` theme extensions. These generate utility classes like `bg-surface`, `text-accent`, `text-muted`.
 
 ---
 
 ## 5. Pages & Templates
 
 ### index.astro
-This is the **homepage** — the only page in your site right now. Astro files have two parts:
+This is the **homepage** — the only page in your site. It assembles all section components:
 
-**Frontmatter (between `---` fences)** — runs on the server at build time:
 ```ts
-import "@/styles/global.css";        // load global styles
-import { basics } from "@/lib/data"; // import your name, label, summary, etc.
+// Frontmatter (runs at build time)
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Navbar from "@/components/Navbar.astro";
+import Hero from "@/components/Hero.astro";
+import About from "@/components/About.astro";
+import { basics } from "@/lib/data";
 ```
 
-**Template (HTML below the fences)** — the actual markup:
-- `{basics.name}` — curly braces insert TypeScript values into HTML (like template literals)
-- Tailwind classes like `text-5xl font-bold text-primary-600` style everything inline
-- Two buttons link to your GitHub and LinkedIn using values from the JSON
-- `dark:text-primary-400` variants apply when dark mode is active
+The page wraps everything in `<BaseLayout>` and stacks components: Navbar → Hero → About (more sections coming in later phases).
 
-The page currently shows a centered hero section with your name, title, summary, and two CTA buttons.
+### BaseLayout.astro
+The **HTML shell** shared by all pages:
+- `<head>` with meta tags, Open Graph, viewport, canonical URL
+- Google Fonts preconnect (Inter + JetBrains Mono)
+- `<slot />` where page content is injected
+
+### Components (src/components/)
+
+| Component | Purpose |
+|-----------|---------|
+| `Navbar.astro` | Fixed top nav with blur backdrop, `</>` logo, section links, blue Contact CTA |
+| `Hero.astro` | Split grid layout — large heading + summary (left), 3 info cards: About Me / My Work / Follow Me (right) |
+| `About.astro` | Section label + heading + summary (left), stats grid: 11+ years / 6+ projects / 28B+ assets / 4 companies (right) |
 
 ---
 
-## 6. Empty Folders
+## 6. Agent Instructions
 
-- **components** — empty. This is where you'd put reusable UI pieces (e.g., `<SkillCard />`, `<JobTimeline />`, `<ProjectCard />`)
-- **layouts** — empty. This is where you'd put page wrappers (e.g., a `<BaseLayout>` with shared `<head>`, nav, footer)
-- **public** — empty. Static assets (images, favicon, PDFs) go here and are served as-is
+Six agent instruction files guide AI coding assistants working on this project:
+
+| File | Role | Key Focus |
+|------|------|-----------|
+| `CLAUDE.md` | Claude Code | Full architecture, commands, design system, coding rules |
+| `.cursorrules` | Cursor/Windsurf | Karpathy guidelines (think → simplify → surgical → verify) |
+| `.github/copilot-instructions.md` | GitHub Copilot | Stack conventions, Tailwind v4 syntax |
+| `.github/agents/frontend-developer.md` | Frontend Dev | Components, responsive, zero JS, a11y |
+| `.github/agents/backend-developer.md` | Backend Dev | Data schema, types, GitHub API at build time |
+| `.github/agents/seo-expert.md` | SEO Expert | Meta tags, Open Graph, JSON-LD, Core Web Vitals |
+| `.github/agents/ux-designer.md` | UX Designer | Visual hierarchy, WCAG 2.1 AA, spacing, color |
 
 ---
 
 ## How Data Flows
 
 ```
-nuthan-resume-template.json   (raw data)
+nuthan-resume-template.json   (raw data — single source of truth)
         ↓
-src/types/resume.ts           (type-checks the shape)
+src/types/resume.ts           (TypeScript interfaces enforce the shape)
         ↓
 src/lib/data.ts               (imports JSON, exports typed objects)
         ↓
-src/pages/index.astro         (imports data, renders HTML)
+src/components/*.astro        (Navbar, Hero, About — import from @lib/data)
         ↓
-Tailwind + global.css          (styles everything)
+src/pages/index.astro         (assembles components into the page)
         ↓
-Static HTML                    (output after `npm run build`)
+src/layouts/BaseLayout.astro  (HTML shell: head, meta, fonts, slot)
+        ↓
+Tailwind + global.css @theme  (styles via utility classes + design tokens)
+        ↓
+dist/index.html               (static HTML output — zero JavaScript)
 ```
 
 The key insight: **Astro generates plain HTML at build time**. There's no JavaScript sent to the browser unless you explicitly add interactive components. This makes the site very fast.
+
+---
+
+## Build Phases
+
+| Phase | Status | Summary |
+|-------|--------|---------|
+| 1. Scaffolding & Config | ✅ Done | Astro + TS + Tailwind, typed data layer, agent instructions |
+| 2. Layout & Hero | ✅ Done | Navbar, hero (split layout), about section, dark design system |
+| 3. Experience & Education | ⏳ Next | Work timeline, education, certifications |
+| 4. Projects & Skills | ⬚ Pending | Project cards, skills grid, GitHub stats |
+| 5. Additional Sections | ⬚ Pending | Talks, OSS, courses, footer |
+| 6. Polish & Deploy | ⬚ Pending | SEO, Lighthouse audit, Cloudflare Pages |
 
 
