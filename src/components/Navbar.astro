@@ -1,0 +1,38 @@
+---
+import { basics } from "@/lib/data";
+
+const navLinks = [
+  { label: "Home", href: "#home" },
+  { label: "About", href: "#about" },
+  { label: "Experience", href: "#experience" },
+  { label: "Projects", href: "#projects" },
+  { label: "Skills", href: "#skills" },
+];
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-md border-b border-white/5">
+  <div class="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
+    <a href="#home" class="flex items-center gap-2 text-white font-bold text-lg">
+      <span class="text-accent">&lt;/&gt;</span>
+      <span>{basics.name.split(" ")[0]}</span>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="text-sm text-muted hover:text-white transition-colors"
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <a
+      href={`mailto:${basics.email}`}
+      class="hidden md:inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 transition-colors"
+    >
+      Contact
+    </a>
+  </div>
+</nav>

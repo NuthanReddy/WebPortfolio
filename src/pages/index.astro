@@ -1,49 +1,15 @@
 ---
-import "@/styles/global.css";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Navbar from "@/components/Navbar.astro";
+import Hero from "@/components/Hero.astro";
+import About from "@/components/About.astro";
 import { basics } from "@/lib/data";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{basics.name} — Portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body class="font-sans">
-    <main class="flex min-h-screen items-center justify-center">
-      <div class="text-center">
-        <h1 class="text-5xl font-bold text-primary-600 dark:text-primary-400">
-          {basics.name}
-        </h1>
-        <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">
-          {basics.label}
-        </p>
-        <p class="mt-6 max-w-2xl text-gray-500 dark:text-gray-500">
-          {basics.summary}
-        </p>
-        <div class="mt-8 flex justify-center gap-4">
-          <a
-            href={`https://${basics.github}`}
-            target="_blank"
-            class="rounded-lg bg-primary-600 px-6 py-3 text-white hover:bg-primary-700 transition-colors"
-          >
-            GitHub
-          </a>
-          <a
-            href={`https://${basics.linkedin}`}
-            target="_blank"
-            class="rounded-lg border border-primary-600 px-6 py-3 text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-950 transition-colors"
-          >
-            LinkedIn
-          </a>
-        </div>
-      </div>
-    </main>
-  </body>
-</html>
+<BaseLayout title={`${basics.name} — Portfolio`}>
+  <Navbar />
+  <main>
+    <Hero />
+    <About />
+  </main>
+</BaseLayout>
