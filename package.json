@@ -1,0 +1,25 @@
+{
+  "name": "webportfolio",
+  "version": "1.0.0",
+  "description": "Nuthan Reddy - Personal Portfolio",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview"
+  },
+  "keywords": [],
+  "author": "Nuthan Reddy",
+  "license": "ISC",
+  "dependencies": {
+    "@astrojs/check": "^0.9.8",
+    "astro": "^6.1.9",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.4",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.12",
+    "tailwindcss": "^4.2.4"
+  }
+}
