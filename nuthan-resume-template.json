@@ -286,66 +286,80 @@
             "name": "Databricks Fundamentals",
             "date": "2026",
             "issuer": "Databricks Academy",
-            "url": "https://credentials.databricks.com/8f0471c4-1155-4daf-9cd2-b08a6dac568a"
+            "url": "https://credentials.databricks.com/8f0471c4-1155-4daf-9cd2-b08a6dac568a",
+            "keywords": ["Databricks", "Apache Spark", "Data Lake", "Delta Lake"]
         },
         {
             "name": "Cloud Computing and Distributed Systems",
-            "date": "2023"
+            "date": "2023",
+            "keywords": ["Distributed Systems", "System Design", "Azure", "AWS", "GCP"]
         },
         {
             "name": "AWS Certified Solutions Architect – Associate",
-            "date": "2022"
+            "date": "2022",
+            "keywords": ["AWS", "System Design", "Microservices", "Docker", "Kubernetes"]
         }
     ],
     "courses": [
         {
             "name": "Agentic AI with Azure AI Foundry",
             "year": "2025",
-            "institute": "Microsoft Learn"
+            "institute": "Microsoft Learn",
+            "keywords": ["Agentic AI", "Azure AI Foundry", "RAG", "LLM Orchestration"]
         },
         {
             "name": "Data Structures and Algorithms",
             "year": "2015",
-            "institute": "IIT Kharagpur"
+            "institute": "IIT Kharagpur",
+            "keywords": ["System Design", "Data Modeling"]
         },
         {
             "name": "Soft Computing and Heuristic Search",
             "year": "2015",
-            "institute": "IIT Kharagpur"
+            "institute": "IIT Kharagpur",
+            "keywords": ["Data Modeling"]
         },
         {
             "name": "Java Memory Management",
-            "institute": "LinkedIn Learning"
+            "institute": "LinkedIn Learning",
+            "keywords": ["Java"]
         },
         {
             "name": "Google Cloud Platform Big Data and Machine Learning Fundamentals",
-            "institute": "Coursera"
+            "institute": "Coursera",
+            "keywords": ["GCP", "BigQuery", "Apache Spark", "Data Lake"]
         },
         {
             "name": "Apache Kafka Series - Kafka Cluster Setup & Administration",
-            "institute": "Udemy Academy"
+            "institute": "Udemy Academy",
+            "keywords": ["Kafka", "Event-Driven Architecture", "Stream Processing"]
         },
         {
             "name": "Feature Selection for Machine Learning",
-            "institute": "Udemy Academy"
+            "institute": "Udemy Academy",
+            "keywords": ["Python", "Data Modeling"]
         },
         {
             "name": "AWS Certified Developer - Associate",
             "year": "2018",
-            "institute": "Udemy"
+            "institute": "Udemy",
+            "keywords": ["AWS", "Docker", "CI/CD", "Microservices"]
         },
         {
             "name": "AWS Certified Solutions Architect - Associate",
             "year": "2018",
-            "institute": "Udemy"
+            "institute": "Udemy",
+            "keywords": ["AWS", "System Design", "Distributed Systems"]
         },
         {
             "name": "Python for Data Science and Machine Learning Bootcamp",
-            "institute": "Udemy Academy"
+            "institute": "Udemy Academy",
+            "keywords": ["Python", "Data Modeling"]
         },
         {
             "name": "Cloud Computing and Distributed Systems",
-            "institute": "IIT Patna"
+            "institute": "IIT Patna",
+            "keywords": ["Distributed Systems", "System Design", "Azure", "AWS", "GCP"]
         }
     ]
   }

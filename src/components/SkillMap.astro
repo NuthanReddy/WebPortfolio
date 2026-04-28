@@ -28,33 +28,25 @@ for (const contrib of contributions) {
   }
 }
 
-// Map courses to skills by keyword matching in course name
+// Map courses to skills using explicit keywords
 for (const course of courses) {
-  const cname = course.name.toLowerCase();
-  for (const group of skills) {
-    for (const kw of group.keywords) {
-      if (cname.includes(kw.toLowerCase()) || kw.toLowerCase().split(/\s+/).some(w => w.length > 3 && cname.includes(w))) {
-        const key = kw.toLowerCase();
-        if (!skillData.has(key)) skillData.set(key, { projects: [], courses: [], certs: [] });
-        const d = skillData.get(key)!;
-        if (!d.courses.includes(course.name)) d.courses.push(course.name);
-      }
-    }
+  const courseKws = (course as any).keywords || [];
+  for (const kw of courseKws) {
+    const key = kw.toLowerCase();
+    if (!skillData.has(key)) skillData.set(key, { projects: [], courses: [], certs: [], contributions: [] });
+    const d = skillData.get(key)!;
+    if (!d.courses.includes(course.name)) d.courses.push(course.name);
   }
 }
 
-// Map certifications by name keyword matching
+// Map certifications to skills using explicit keywords
 for (const cert of certifications) {
-  const cname = cert.name.toLowerCase();
-  for (const group of skills) {
-    for (const kw of group.keywords) {
-      if (cname.includes(kw.toLowerCase()) || kw.toLowerCase().split(/\s+/).some(w => w.length > 3 && cname.includes(w))) {
-        const key = kw.toLowerCase();
-        if (!skillData.has(key)) skillData.set(key, { projects: [], courses: [], certs: [] });
-        const d = skillData.get(key)!;
-        if (!d.certs.includes(cert.name)) d.certs.push(cert.name);
-      }
-    }
+  const certKws = (cert as any).keywords || [];
+  for (const kw of certKws) {
+    const key = kw.toLowerCase();
+    if (!skillData.has(key)) skillData.set(key, { projects: [], courses: [], certs: [], contributions: [] });
+    const d = skillData.get(key)!;
+    if (!d.certs.includes(cert.name)) d.certs.push(cert.name);
   }
 }
 

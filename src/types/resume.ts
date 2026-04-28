@@ -48,12 +48,14 @@ export interface Certification {
   date: string;
   issuer?: string;
   url?: string;
+  keywords?: string[];
 }
 
 export interface Course {
   name: string;
   year?: string;
   institute: string;
+  keywords?: string[];
 }
 
 export interface ResumeData {
