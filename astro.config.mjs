@@ -3,6 +3,7 @@ import sitemap from "@astrojs/sitemap";
 
 // Use Cloudflare adapter only when CF_PAGES is set (Cloudflare build environment)
 const isCloudflare = !!process.env.CF_PAGES;
+const isGitHubPages = !!process.env.GITHUB_ACTIONS;
 
 let adapter;
 if (isCloudflare) {
@@ -11,7 +12,8 @@ if (isCloudflare) {
 }
 
 export default defineConfig({
-  site: "https://nuthan.is-a.dev",
+  site: isGitHubPages ? "https://nuthanreddy.github.io" : "https://nuthan.is-a.dev",
+  base: isGitHubPages ? "/WebPortfolio/" : "/",
   integrations: [sitemap()],
   output: isCloudflare ? "server" : "static",
   ...(adapter ? { adapter } : {}),
