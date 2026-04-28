@@ -155,6 +155,18 @@
         ]
       },
       {
+        "name": "Architecture",
+        "keywords": [
+          "Microservices",
+          "Event-Driven Architecture",
+          "Data Mesh",
+          "ETL/ELT Pipelines",
+          "CQRS",
+          "Circuit Breaker",
+          "API Design"
+        ]
+      },
+      {
         "name": "Cloud & Infrastructure",
         "keywords": [
           "Azure",
