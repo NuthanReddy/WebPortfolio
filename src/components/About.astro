@@ -21,18 +21,9 @@ const totalSkills = skills.reduce((a, g) => a + g.keywords.length, 0);
         <h2 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
           I've been building<br />data systems since 2015
         </h2>
-        <p class="mt-6 text-muted leading-relaxed">
-          {basics.summary}
+        <p class="mt-6 text-sm text-muted leading-relaxed">
+          Currently at <strong class="text-white">{currentJob.company}</strong> as {currentJob.position}, leading data governance and agentic systems at enterprise scale.
         </p>
-        <a
-          href="#experience"
-          class="mt-6 inline-flex items-center gap-2 text-accent font-semibold hover:underline"
-        >
-          More about me
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
       </div>
 
       <!-- Right: Stats -->

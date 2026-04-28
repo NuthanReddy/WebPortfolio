@@ -13,9 +13,7 @@ import { basics } from "@/lib/data";
           I'm {basics.name.split(" ")[0]}, a<br />
           <span class="text-accent">Software Engineer</span>
         </h1>
-        <p class="mt-6 max-w-xl text-muted leading-relaxed">
-          {basics.summary}
-        </p>
+        <p class="mt-4 text-lg text-muted">{basics.label}</p>
 
         <a
           href="#about"
@@ -30,20 +28,6 @@ import { basics } from "@/lib/data";
 
       <!-- Right: Info cards sidebar -->
       <div class="flex flex-col gap-6">
-
-        <!-- About Me card -->
-        <div class="rounded-xl bg-surface-card p-6 border border-white/5">
-          <h3 class="text-xs font-semibold uppercase tracking-widest text-white mb-3">About Me</h3>
-          <p class="text-sm text-muted leading-relaxed">
-            {basics.label}
-          </p>
-          <a href="#about" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-white hover:text-accent transition-colors">
-            Learn More
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        </div>
 
         <!-- My Work card -->
         <div class="rounded-xl bg-surface-card p-6 border border-white/5">
