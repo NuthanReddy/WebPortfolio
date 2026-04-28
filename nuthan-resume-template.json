@@ -176,7 +176,7 @@
         "name": "Asset Data Catalog",
         "company": "Microsoft",
         "keywords": ["Scope", "C#", "Azure Data Factory", "Data Governance", "Data Quality", "Data Contracts", "Data Lineage", "PII Detection"],
-        "skills": ["Distributed Systems", "System Design", "Data Modelling", "Automated Testing", "GDPR Compliance", "Design Patterns"],
+        "skills": ["Distributed Systems", "System Design", "Data Modelling", "Automated Testing", "GDPR Compliance", "Design Patterns", "Telemetry", "Code Quality"],
         "description": [
           "Optimized Data Scan of 28B+ assets and 64 asset types for 2-20x improvement; reduced data freshness from 8 days to under 24 hours.",
           "Reduced orphaned assets by identifying ownership based on new ownership metadata from 4% to <0.1%.",
@@ -188,7 +188,7 @@
         "name": "Signal Processing and Auditing",
         "company": "Microsoft",
         "keywords": ["C#", "Kubernetes", "Docker", "Event Hub", "Data Lake", "Power BI", "Azure Data Explorer", "GDPR Compliance", "Monitoring & Alerting"],
-        "skills": ["Microservices", "Event-Driven Architecture", "Data Lineage", "PII Detection", "Design Patterns"],
+        "skills": ["Microservices", "Event-Driven Architecture", "Data Lineage", "PII Detection", "Design Patterns", "Telemetry", "Code Quality"],
         "description": [
           "Led Privacy Signals Team — data deletion, export delivery, and compliance at enterprise scale.",
           "Route Signals to the concerned team and audit the compliance of the actions taken and report the KPIs across the organization."
@@ -198,7 +198,7 @@
         "name": "Trust360",
         "company": "Microsoft",
         "keywords": ["Python", "Apache Spark", "Azure Data Factory", "Synapse", "Data Lake", "Data Governance", "ETL/ELT Pipelines"],
-        "skills": ["Data Modelling", "System Design", "GDPR Compliance", "Data Quality", "Design Patterns"],
+        "skills": ["Data Modelling", "System Design", "GDPR Compliance", "Data Quality", "Design Patterns", "Telemetry", "Code Quality"],
         "description": [
           "Designed a generic low code Facet Processing Framework for different Privacy Programs. Facet Processing framework supports multiple sources and sinks that are pluggable and configurable.",
           "Program owners can reuse and extend the Facet Processing framework to implement new privacy programs with minimal effort and reduced redundancy.",
@@ -208,7 +208,7 @@
       {"name": "Investigation Assistant",
         "company": "Microsoft",
         "keywords": ["TypeScript", "RAG", "MCP", "Node.js", "Postgres", "Azure AI Foundry", "Agentic AI", "LLM Orchestration"],
-        "skills": ["API Design", "Microservices", "System Design", "Design Patterns"],
+        "skills": ["API Design", "Microservices", "System Design", "Design Patterns", "Telemetry", "Code Quality"],
         "description": [
           "Architected Agent based Investigation and Remediation framework for incidents using TSGs and mcp tools.",
           "Added Tools for Azure Data Explorer and Synapse to enhance investigation and remediation capabilities.",
@@ -219,7 +219,7 @@
         "name": "EBS Data Pipeline Framework",
         "company": "Walmart",
         "keywords": ["Spark", "Scala", "GCP", "Go", "Slack", "CI/CD", "ETL/ELT Pipelines"],
-        "skills": ["Data Modelling", "Automated Testing", "System Design", "Design Patterns"],
+        "skills": ["Data Modelling", "Automated Testing", "System Design", "Design Patterns", "Telemetry", "Code Quality"],
         "description": [
           "Built modular, config-driven data processing framework for Enterprise Business Services.",
           "Optimized Spark data processing jobs, reducing execution time by ~30% and improving resource utilization.",
