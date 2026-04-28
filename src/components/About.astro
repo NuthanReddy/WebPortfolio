@@ -1,9 +1,10 @@
 ---
-import { basics, jobs } from "@/lib/data";
+import { basics, jobs, skills } from "@/lib/data";
 
 const currentJob = jobs[0];
 const yearsOfExperience = new Date().getFullYear() - 2015;
 const totalProjects = 6;
+const totalSkills = skills.reduce((a, g) => a + g.keywords.length, 0);
 ---
 
 <section id="about" class="py-20 border-t border-white/5">
@@ -46,8 +47,8 @@ const totalProjects = 6;
             <p class="mt-1 text-sm text-muted">Major<br />projects</p>
           </div>
           <div class="rounded-xl bg-surface-card p-6 border border-white/5">
-            <span class="text-4xl font-extrabold text-accent">28B+</span>
-            <p class="mt-1 text-sm text-muted">Assets<br />cataloged</p>
+            <span class="text-4xl font-extrabold text-accent">{totalSkills}+</span>
+            <p class="mt-1 text-sm text-muted">Technical<br />skills</p>
           </div>
           <div class="rounded-xl bg-surface-card p-6 border border-white/5">
             <span class="text-4xl font-extrabold text-accent">4</span>

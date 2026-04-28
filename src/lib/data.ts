@@ -9,3 +9,7 @@ export const skills = resume.headings.skills;
 export const projects = resume.headings.projects;
 export const certifications = resume.headings.certifications;
 export const courses = resume.headings.courses;
+
+export function getProjectsByCompany(company: string) {
+  return projects.filter(p => p.company.toLowerCase().includes(company.toLowerCase()) || company.toLowerCase().includes(p.company.toLowerCase()));
+}

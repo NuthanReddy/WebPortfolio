@@ -1,7 +1,7 @@
 ---
 import SectionHeading from "@/components/SectionHeading.astro";
 import TimelineItem from "@/components/TimelineItem.astro";
-import { jobs } from "@/lib/data";
+import { jobs, getProjectsByCompany } from "@/lib/data";
 ---
 
 <section id="experience" class="py-20 border-t border-white/5">
@@ -17,6 +17,7 @@ import { jobs } from "@/lib/data";
           endDate={job.endDate}
           highlights={job.highlights}
           keywords={job.keywords}
+          projects={getProjectsByCompany(job.company)}
           isLast={index === jobs.length - 1}
         />
       ))}
