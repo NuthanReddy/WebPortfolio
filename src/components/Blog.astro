@@ -1,14 +1,39 @@
 ---
 import SectionHeading from "@/components/SectionHeading.astro";
+
+const blogs = [
+  {
+    title: "Microservices — Is it worth the hype and how can we benefit from it?",
+    url: "https://ironman-blogs.medium.com/microservices-is-it-worth-the-hype-and-how-can-we-benefit-from-it-fa2a1b53d5cb",
+    platform: "Medium",
+    tags: ["Microservices", "Architecture", "Distributed Systems"],
+  },
+];
 ---
 
 <section id="blog" class="py-20 border-t border-white/5">
   <div class="mx-auto max-w-6xl px-6">
     <SectionHeading label="Blog" heading="Thoughts & Writing" />
-    <p class="mt-4 text-sm text-muted max-w-2xl">Coming soon — articles on data engineering, distributed systems, and agentic AI.</p>
 
-    <div class="mt-12 rounded-xl bg-surface-card border border-white/5 p-8 text-center">
-      <p class="text-muted text-sm">✍️ Blog posts coming soon. Stay tuned!</p>
+    <div class="mt-12 space-y-4">
+      {blogs.map(post => (
+        <a href={post.url} target="_blank" rel="noopener" class="block rounded-xl bg-surface-card border border-white/5 p-6 hover:border-accent/30 transition-colors">
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="text-base font-semibold text-white">{post.title}</h3>
+              <p class="text-xs text-accent mt-1">{post.platform}</p>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-muted flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            {post.tags.map(t => (
+              <span class="inline-flex items-center rounded-full bg-surface border border-white/10 px-2 py-0.5 text-[10px] font-mono text-muted">{t}</span>
+            ))}
+          </div>
+        </a>
+      ))}
     </div>
   </div>
 </section>
