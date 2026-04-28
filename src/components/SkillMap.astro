@@ -192,7 +192,7 @@ skills.forEach((group, gi) => {
             <circle cx={n.x} cy={n.y} r={n.r + 6} fill={n.color} opacity="0" class="node-glow" />
             {/* Node circle */}
             {n.type === 'center' ? (
-              <circle cx={n.x} cy={n.y} r={n.r} fill="#0a0f1a" stroke="#60a5fa" stroke-width="3" />
+              <circle cx={n.x} cy={n.y} r={n.r} fill="#0a0f1a" stroke="#60a5fa" stroke-width="2" stroke-opacity="0.4" />
             ) : n.type === 'category' ? (
               <circle cx={n.x} cy={n.y} r={n.r} fill="#0a0f1a" stroke={n.color} stroke-width="1.5" stroke-opacity="0.5" />
             ) : (
