@@ -40,19 +40,14 @@ const timelineId = `timeline-${company.toLowerCase().replace(/\s+/g, '-')}-proje
     
     <!-- Projects (collapsible) -->
     {projects.length > 0 && (
-      <div class="mt-4">
-        <button
-          type="button"
-          class="timeline-toggle flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted hover:text-accent transition-colors"
-          data-target={timelineId}
-          aria-expanded="false"
-        >
-          <svg class="toggle-chevron w-3 h-3 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+      <details class="mt-4 group">
+        <summary class="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted hover:text-accent transition-colors cursor-pointer list-none">
+          <svg class="w-3 h-3 transition-transform group-open:rotate-90" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
           </svg>
           Projects ({projects.length})
-        </button>
-        <div id={timelineId} class="timeline-projects mt-3 space-y-3 hidden">
+        </summary>
+        <div class="mt-3 space-y-3">
           {projects.map(project => (
             <div class="rounded-lg bg-surface-card/50 border border-white/5 p-4">
               <div class="flex items-center justify-between">
@@ -78,30 +73,11 @@ const timelineId = `timeline-${company.toLowerCase().replace(/\s+/g, '-')}-proje
             </div>
           ))}
         </div>
-      </div>
+      </details>
     )}
   </div>
 </div>
 
 <style>
-  .toggle-chevron.open {
-    transform: rotate(90deg);
-  }
+  summary::-webkit-details-marker { display: none; }
 </style>
-
-<script is:inline>
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.timeline-toggle').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var targetId = btn.getAttribute('data-target');
-      var target = document.getElementById(targetId);
-      var chevron = btn.querySelector('.toggle-chevron');
-      if (!target) return;
-      var isHidden = target.classList.contains('hidden');
-      target.classList.toggle('hidden');
-      chevron.classList.toggle('open');
-      btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
-    });
-  });
-});
-</script>
