@@ -15,15 +15,16 @@ interface Props {
 }
 
 const { position, company, location, startDate, endDate, highlights, keywords, isLast = false, projects = [] } = Astro.props;
+const timelineId = `timeline-${company.toLowerCase().replace(/\s+/g, '-')}-projects`;
 ---
 
-<div class="relative pl-8 pb-12">
+<div class="relative pl-8 pb-10">
   <!-- Blue dot marker -->
-  <div class="absolute left-0 top-1 w-3 h-3 rounded-full bg-accent border-2 border-surface"></div>
+  <div class="absolute left-0 top-1 w-3 h-3 rounded-full bg-accent border-2 border-surface z-10"></div>
   
-  <!-- Vertical connecting line (hidden if isLast) -->
+  <!-- Vertical connecting line — runs full height unless last -->
   {!isLast && (
-    <div class="absolute left-[5px] top-4 bottom-0 w-0.5 bg-white/10"></div>
+    <div class="absolute left-[5px] top-4 w-0.5 bg-white/10" style="bottom: -0.5rem;"></div>
   )}
   
   <!-- Content -->
@@ -37,35 +38,70 @@ const { position, company, location, startDate, endDate, highlights, keywords, i
     <!-- Date range and location -->
     <p class="text-sm text-muted mt-1">{startDate} — {endDate} · {location}</p>
     
-    <!-- Projects -->
+    <!-- Projects (collapsible) -->
     {projects.length > 0 && (
-      <div class="mt-5 space-y-3">
-        <p class="text-xs font-semibold uppercase tracking-widest text-muted">Projects</p>
-        {projects.map(project => (
-          <div class="rounded-lg bg-surface-card/50 border border-white/5 p-4">
-            <div class="flex items-center justify-between">
-              <h4 class="text-sm font-semibold text-white">{project.name}</h4>
-              {project.url && (
-                <a href={project.url} target="_blank" rel="noopener" class="text-muted hover:text-accent transition-colors" aria-label={`View ${project.name}`}>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
-              )}
+      <div class="mt-4">
+        <button
+          type="button"
+          class="timeline-toggle flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted hover:text-accent transition-colors"
+          data-target={timelineId}
+          aria-expanded="false"
+        >
+          <svg class="toggle-chevron w-3 h-3 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+          Projects ({projects.length})
+        </button>
+        <div id={timelineId} class="timeline-projects mt-3 space-y-3 hidden">
+          {projects.map(project => (
+            <div class="rounded-lg bg-surface-card/50 border border-white/5 p-4">
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-semibold text-white">{project.name}</h4>
+                {project.url && (
+                  <a href={project.url} target="_blank" rel="noopener" class="text-muted hover:text-accent transition-colors" aria-label={`View ${project.name}`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                )}
+              </div>
+              <ul class="mt-2 space-y-1">
+                {project.description.map(d => (
+                  <li class="text-xs text-muted leading-relaxed pl-3 relative before:content-['▹'] before:absolute before:left-0 before:text-accent">{d}</li>
+                ))}
+              </ul>
+              <div class="mt-2 flex flex-wrap gap-1.5">
+                {project.keywords.map(k => (
+                  <span class="inline-flex items-center rounded-full bg-surface border border-white/10 px-2 py-0.5 text-[10px] font-mono text-muted">{k}</span>
+                ))}
+              </div>
             </div>
-            <ul class="mt-2 space-y-1">
-              {project.description.map(d => (
-                <li class="text-xs text-muted leading-relaxed pl-3 relative before:content-['▹'] before:absolute before:left-0 before:text-accent">{d}</li>
-              ))}
-            </ul>
-            <div class="mt-2 flex flex-wrap gap-1.5">
-              {project.keywords.map(k => (
-                <span class="inline-flex items-center rounded-full bg-surface border border-white/10 px-2 py-0.5 text-[10px] font-mono text-muted">{k}</span>
-              ))}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     )}
   </div>
 </div>
+
+<style>
+  .toggle-chevron.open {
+    transform: rotate(90deg);
+  }
+</style>
+
+<script is:inline>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.timeline-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var targetId = btn.getAttribute('data-target');
+      var target = document.getElementById(targetId);
+      var chevron = btn.querySelector('.toggle-chevron');
+      if (!target) return;
+      var isHidden = target.classList.contains('hidden');
+      target.classList.toggle('hidden');
+      chevron.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+    });
+  });
+});
+</script>
