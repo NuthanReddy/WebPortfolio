@@ -31,16 +31,11 @@
           "keywords": [
             "Data Governance",
             "Agentic Systems",
-            "Azure Foundry",
+            "Azure AI Foundry",
             "Python",
             "Apache Spark",
-            "Databricks",
-            "Azure Data Factory",
             "Synapse",
-            "C#",
-            "Data Lake",
-            "Delta",
-            "CI/CD"
+            "C#"
           ]
         },
         {
@@ -113,25 +108,14 @@
     ],
     "skills": [
       {
-        "name": "Core Technologies",
+        "name": "Data Platforms",
         "keywords": [
           "Apache Spark",
           "Kafka",
-          "Distributed Systems",
-          "Data Modeling",
-          "Stream Processing",
-          "RDBMS",
-          "Elasticsearch"
-        ]
-      },
-      {
-        "name": "Data Platforms",
-        "keywords": [
           "Data Lake",
+          "Data Modeling",
           "Lakehouse",
           "Delta Lake",
-          "Azure Synapse",
-          "Azure Data Factory",
           "BigQuery",
           "Snowflake",
           "Databricks"
@@ -162,12 +146,12 @@
         "name": "Engineering Excellence",
         "keywords": [
           "System Design",
-          "CI/CD",
-          "Data Contracts",
           "Monitoring & Alerting",
           "Automated Testing",
           "Code Reviews",
-          "Agile/Scrum"
+          "Telemetry",
+          "Data Contracts",
+          "CI/CD"
         ]
       },
       {
@@ -188,8 +172,7 @@
           "Data Quality",
           "Data Lineage",
           "PII Detection",
-          "GDPR Compliance",
-          "Data Mesh"
+          "GDPR Compliance"
         ]
       }
     ],
@@ -202,7 +185,8 @@
           "Led Privacy Signals Team — data deletion, export delivery, and compliance at enterprise scale",
           "Optimized Data Scan for 2-20x improvement; reduced data freshness from 8 days to 24 hours",
           "Reduced dark data from ~4% to <0.1%, improving GDPR compliance KPIs",
-          "Established Data Contracts across DataMap, DataGrid, Trust360 — halved live-site incidents, 80% faster TTR"
+          "Established Data Contracts across DataMap, DataGrid, Trust360 — halved live-site incidents, 80% faster TTR",
+          "Eliminated non-deterministic code paths in data processing jobs, enhancing testability, reliability and consistency."
         ]
       },
       {
@@ -216,11 +200,12 @@
       },
       {
         "name": "Ad Pre-bid Pipeline",
-        "company": "Sigmoid - OpenX",
-        "keywords": ["Kafka", "PubSub", "DataFlow", "Java", "Kubernetes", "Docker"],
+        "company": "Sigmoid",
+        "keywords": ["Kafka", "PubSub", "DataFlow", "Java", "Helm", "Kubernetes", "Docker"],
         "description": [
-          "Planet-scale streaming pipeline: 100k req/sec, 1GB/sec — presented at ApacheCon NA 2020",
-          "Auto-scaling on GKE with circuit breaker failover to PubSub + Dataflow"
+          "Developed streaming pipeline to support 100k req/sec, 1GB/sec (14k req/sec/core) and 10k concurrent users - presented at Apache Con NA 2020",
+          "Optimized auto scaling to reduce costs without impacting performance.",
+          "Configured circuit breaker to redirect data to PubSub + Dataflow improving reliability when Kafka + Kafka Connect is down"
         ]
       },
       {
@@ -228,21 +213,23 @@
         "company": "Sigmoid",
         "keywords": ["Apache Spark", "BigQuery", "NitroDB"],
         "description": [
-          "Deployed percentile at scale using t-digest algorithm — 10-100x pre-aggregation performance",
-          "Migrated NitroDB to BigQuery, reducing costs by 30%"
+          "Evaluated Percentile function in BigQuery and deployed percentile at scale using t-digest algorithm achieving 10-100x performance on pre-aggregation",
+          "Evaluated, tested and deployed NitroDB on BigQuery reducing costs by 30%"
         ]
       },
       {
-        "name": "NitroDB Search",
+        "name": "SigView Performance Optimization",
         "company": "Sigmoid",
-        "keywords": ["Elasticsearch", "NitroDB"],
+        "keywords": ["Elasticsearch", "NitroDB", "Multi-Tenancy"],
         "description": [
-          "Multi-tenant search with Elasticsearch — per-org facets and reindexing strategy"
+          "Designed responsive search feature for multi-tenant attribute search with multi language support.",
+          "Implemented dynamic ranking of rollups to improve search latency",
+          "Integrated Elasticsearch with NitroDB and created update/reindexing strategy"
         ]
       },
       {
         "name": "Snowflake ETL",
-        "company": "OpenX",
+        "company": "Sigmoid",
         "keywords": ["Apache Spark", "Snowflake", "Python"],
         "url": "https://github.com/snowflakedb/spark-snowflake",
         "description": [
