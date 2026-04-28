@@ -175,7 +175,7 @@
       {
         "name": "Asset Data Catalog",
         "company": "Microsoft",
-        "keywords": ["Scope", "C#", "Azure Data Factory", "Data Governance", "Data Quality", "Data Contracts", "Data Lineage"],
+        "keywords": ["Scope", "C#", "Azure Data Factory", "Data Governance", "Data Quality", "Data Contracts", "Data Lineage", "PII Detection"],
         "description": [
           "Optimized Data Scan of 28B+ assets and 64 asset types for 2-20x improvement; reduced data freshness from 8 days to under 24 hours.",
           "Reduced orphaned assets by identifying ownership based on new ownership metadata from 4% to <0.1%.",
